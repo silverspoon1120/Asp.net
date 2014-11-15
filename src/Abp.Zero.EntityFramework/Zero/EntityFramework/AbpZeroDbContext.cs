@@ -10,7 +10,7 @@ using Abp.MultiTenancy;
 namespace Abp.Zero.EntityFramework
 {
     /// <summary>
-    /// DbContext for ABP zero.
+    /// DbContext object for  ABP zero.
     /// </summary>
     public abstract class AbpZeroDbContext<TTenant, TRole, TUser> : AbpDbContext
         where TRole : AbpRole<TTenant, TUser>
@@ -43,18 +43,12 @@ namespace Abp.Zero.EntityFramework
         public virtual IDbSet<UserRole> UserRoles { get; set; }
 
         /// <summary>
-        /// Permissions.
+        /// Role permissions.
         /// </summary>
         public virtual IDbSet<PermissionSetting> Permissions { get; set; }
 
-        /// <summary>
-        /// Role permissions.
-        /// </summary>
         public virtual IDbSet<RolePermissionSetting> RolePermissions { get; set; }
         
-        /// <summary>
-        /// User permissions.
-        /// </summary>
         public virtual IDbSet<UserPermissionSetting> UserPermissions { get; set; }
 
         /// <summary>
@@ -81,9 +75,6 @@ namespace Abp.Zero.EntityFramework
 
         }
 
-        /// <summary>
-        /// This constructor can be used for unit tests.
-        /// </summary>
         protected AbpZeroDbContext(DbConnection dbConnection, bool contextOwnsConnection)
             : base(dbConnection, contextOwnsConnection)
         {
