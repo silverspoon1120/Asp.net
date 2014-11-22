@@ -12,7 +12,7 @@ What is 'module zero'
 * Implements Setting system of ASP.NET Boilerplate to store Tenant, Application and User level settings in the database.
 * And much more...
  
-__IMPORTANT NOTE__: This project is not production ready yet and not released. But you can try it early.
+__IMPORTANT NOTE__: This project is not production ready yet and not released. But, if you want to try early, you can follow the instructions below:
 
 Sample Project
 -------------------
@@ -26,10 +26,7 @@ There is a sample project in the **sample** folder. To run it:
  
 ![alt login form](https://raw.githubusercontent.com/aspnetboilerplate/module-zero/master/doc/login-form.png)
 
-See running application on http://qasample.aspnetboilerplate.com/
-
-User name: admin or emre
-
+Test User: admin@aspnetboilerplate.com
 Password: 123qwe
 
 After login, a question list is shown:

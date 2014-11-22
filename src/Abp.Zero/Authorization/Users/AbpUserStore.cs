@@ -15,7 +15,7 @@ namespace Abp.Authorization.Users
     /// <summary>
     /// Implements 'User Store' of ASP.NET Identity Framework.
     /// </summary>
-    public abstract class AbpUserStore<TTenant, TRole, TUser> :
+    public class AbpUserStore<TTenant, TRole, TUser> :
         IUserPasswordStore<TUser, long>,
         IUserEmailStore<TUser, long>,
         IUserLoginStore<TUser, long>,
