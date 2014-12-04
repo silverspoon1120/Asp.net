@@ -5,7 +5,6 @@ using System.Linq.Dynamic;
 using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
-using Abp.AutoMapper;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
 using Abp.Linq.Extensions;
@@ -45,7 +44,7 @@ namespace ModuleZeroSampleProject.Questions
             return new PagedResultOutput<QuestionDto>
                    {
                        TotalCount = questionCount,
-                       Items = questions.MapTo<List<QuestionDto>>()
+                       Items = Mapper.Map<List<QuestionDto>>(questions)
                    };
         }
 
@@ -77,7 +76,7 @@ namespace ModuleZeroSampleProject.Questions
 
             return new GetQuestionOutput
                    {
-                       Question = question.MapTo<QuestionWithAnswersDto>()
+                       Question = Mapper.Map<QuestionWithAnswersDto>(question)
                    };
         }
 
@@ -113,7 +112,7 @@ namespace ModuleZeroSampleProject.Questions
 
             return new SubmitAnswerOutput
                    {
-                       Answer = answer.MapTo<AnswerDto>()
+                       Answer = Mapper.Map<AnswerDto>(answer)
                    };
         }
 
