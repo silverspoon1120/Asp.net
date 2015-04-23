@@ -1,7 +1,6 @@
 using System.Linq;
 using Abp.Authorization.Roles;
 using Abp.Authorization.Users;
-using EntityFramework.DynamicFilters;
 using ModuleZeroSampleProject.Authorization;
 using ModuleZeroSampleProject.EntityFramework;
 using ModuleZeroSampleProject.MultiTenancy;
@@ -14,7 +13,6 @@ namespace ModuleZeroSampleProject.Migrations.Data
     {
         public void Build(ModuleZeroSampleProjectDbContext context)
         {
-            context.DisableAllFilters();
             CreateUserAndRoles(context);
         }
 
