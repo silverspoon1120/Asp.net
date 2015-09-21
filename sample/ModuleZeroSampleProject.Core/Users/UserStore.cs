@@ -15,17 +15,16 @@ namespace ModuleZeroSampleProject.Users
             IRepository<UserRole, long> userRoleRepository,
             IRepository<Role> roleRepository,
             IRepository<UserPermissionSetting, long> userPermissionSettingRepository,
-            IUnitOfWorkManager unitOfWorkManager,
-            ICacheManager cacheManager
-        )
+            IAbpSession session,
+            IUnitOfWorkManager unitOfWorkManager)
             : base(
                 userRepository,
                 userLoginRepository,
                 userRoleRepository,
                 roleRepository,
                 userPermissionSettingRepository,
-                unitOfWorkManager,
-            cacheManager)
+                session,
+                unitOfWorkManager)
         {
         }
     }
