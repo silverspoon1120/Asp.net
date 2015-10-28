@@ -8,7 +8,6 @@ using Abp.Authorization.Roles;
 using Abp.Authorization.Users;
 using Abp.Configuration;
 using Abp.EntityFramework;
-using Abp.Localization;
 using Abp.MultiTenancy;
 
 namespace Abp.Zero.EntityFramework
@@ -90,8 +89,6 @@ namespace Abp.Zero.EntityFramework
         /// EditionFeatureSettings.
         /// </summary>
         public virtual IDbSet<EditionFeatureSetting> EditionFeatureSettings { get; set; }
-
-        public virtual IDbSet<ApplicationLanguage> Languages { get; set; }
 
         /// <summary>
         /// Default constructor.
