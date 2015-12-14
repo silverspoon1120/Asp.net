@@ -14,15 +14,7 @@ namespace Abp.Zero.Configuration
                            AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin,
                            "false",
                            new FixedLocalizableString("Is email confirmation required for login."),
-                           scopes: SettingScopes.Application | SettingScopes.Tenant,
-                           isVisibleToClients: true
-                           ),
-                       new SettingDefinition(
-                           AbpZeroSettingNames.OrganizationUnits.MaxUserMembershipCount,
-                           int.MaxValue.ToString(),
-                           new FixedLocalizableString("Maximum allowed organization unit membership count for a user."),
-                           scopes: SettingScopes.Application | SettingScopes.Tenant,
-                           isVisibleToClients: true
+                           scopes: SettingScopes.Application | SettingScopes.Tenant
                            )
                    };
         }
