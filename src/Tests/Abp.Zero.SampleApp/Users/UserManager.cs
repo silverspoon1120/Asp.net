@@ -5,6 +5,7 @@ using Abp.Configuration.Startup;
 using Abp.Dependency;
 using Abp.Domain.Repositories;
 using Abp.Domain.Uow;
+using Abp.Organizations;
 using Abp.Runtime.Caching;
 using Abp.Zero.Configuration;
 using Abp.Zero.SampleApp.MultiTenancy;
@@ -24,19 +25,24 @@ namespace Abp.Zero.SampleApp.Users
             ISettingManager settingManager,
             IUserManagementConfig userManagementConfig,
             IIocResolver iocResolver,
-            ICacheManager cacheManager
-            )
+            ICacheManager cacheManager,
+            IRepository<OrganizationUnit, long> organizationUnitRepository, 
+            IRepository<UserOrganizationUnit, long> userOrganizationUnitRepository,
+            IOrganizationUnitSettings organizationUnitSettings)
             : base(
-            userStore,
-            roleManager,
-            tenantRepository,
-            multiTenancyConfig,
-            permissionManager,
-            unitOfWorkManager,
-            settingManager,
-            userManagementConfig,
-            iocResolver,
-            cacheManager)
+                userStore,
+                roleManager,
+                tenantRepository,
+                multiTenancyConfig,
+                permissionManager,
+                unitOfWorkManager,
+                settingManager,
+                userManagementConfig,
+                iocResolver,
+                cacheManager,
+                organizationUnitRepository,
+                userOrganizationUnitRepository,
+                organizationUnitSettings)
         {
         }
     }
