@@ -185,9 +185,5 @@ namespace Abp.Authorization.Users
         {
             return string.Format("[User {0}] {1}", Id, UserName);
         }
-        /// <summary>
-        /// Return full name (Surname Name)
-        /// </summary>
-        public virtual string FullName => $"{this.Surname} {this.Name}";
     }
 }
