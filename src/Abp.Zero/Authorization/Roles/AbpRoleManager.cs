@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,8 +19,8 @@ namespace Abp.Authorization.Roles
     /// Extends <see cref="RoleManager{TRole,TKey}"/> of ASP.NET Identity Framework.
     /// Applications should derive this class with appropriate generic arguments.
     /// </summary>
-    public abstract class AbpRoleManager<TTenant, TRole, TUser>
-        : RoleManager<TRole, int>,
+    public abstract class AbpRoleManager<TTenant, TRole, TUser> 
+        : RoleManager<TRole, int>, 
         IDomainService
         where TTenant : AbpTenant<TTenant, TUser>
         where TRole : AbpRole<TTenant, TUser>, new()
@@ -63,7 +62,7 @@ namespace Abp.Authorization.Roles
         {
             _permissionManager = permissionManager;
             _cacheManager = cacheManager;
-
+            
             RoleManagementConfig = roleManagementConfig;
             AbpStore = store;
             AbpSession = NullAbpSession.Instance;
@@ -234,12 +233,12 @@ namespace Abp.Authorization.Roles
             var oldPermissions = await GetGrantedPermissionsAsync(role);
             var newPermissions = permissions.ToArray();
 
-            foreach (var permission in oldPermissions.Where(p => !newPermissions.Contains(p, new PermissionEqualityComparer())))
+            foreach (var permission in oldPermissions.Where(p => !newPermissions.Contains(p)))
             {
                 await ProhibitPermissionAsync(role, permission);
             }
 
-            foreach (var permission in newPermissions.Where(p => !oldPermissions.Contains(p, new PermissionEqualityComparer())))
+            foreach (var permission in newPermissions.Where(p => !oldPermissions.Contains(p)))
             {
                 await GrantPermissionAsync(role, permission);
             }
