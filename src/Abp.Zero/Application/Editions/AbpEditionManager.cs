@@ -39,6 +39,7 @@ namespace Abp.Application.Editions
             return _featureValueStore.GetEditionValueOrNullAsync(editionId, featureName);
         }
 
+        [UnitOfWork]
         public virtual Task SetFeatureValueAsync(int editionId, string featureName, string value)
         {
             return _featureValueStore.SetEditionFeatureValueAsync(editionId, featureName, value);
@@ -93,8 +94,6 @@ namespace Abp.Application.Editions
         {
             return EditionRepository.DeleteAsync(edition);
         }
-
-        //TODO: Should move cache invalidation code to AbpFeatureValueStore
 
         public virtual void HandleEvent(EntityChangedEventData<EditionFeatureSetting> eventData)
         {

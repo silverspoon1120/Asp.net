@@ -1,9 +1,10 @@
 ﻿using Abp.Authorization.Roles;
+using Abp.Zero.SampleApp.MultiTenancy;
 using Abp.Zero.SampleApp.Users;
 
 namespace Abp.Zero.SampleApp.Roles
 {
-    public class Role : AbpRole<User>
+    public class Role : AbpRole<Tenant, User>
     {
         public Role()
         {

@@ -2,8 +2,6 @@
 using System.Threading.Tasks;
 using Abp.Application.Editions;
 using Abp.Application.Features;
-using Abp.Domain.Repositories;
-using Abp.Domain.Uow;
 using Abp.Zero.SampleApp.Editions;
 using Abp.Zero.SampleApp.Features;
 using Abp.Zero.SampleApp.MultiTenancy;
@@ -74,11 +72,7 @@ namespace Abp.Zero.SampleApp.Tests.Application.Editions
             await _editionManager.SetFeatureValueAsync(standardEdition.Id, AppFeatureProvider.MyBoolFeature, "true");
             await _editionManager.SetFeatureValueAsync(standardEdition.Id, AppFeatureProvider.MyNumericFeature, "43");
 
-            //Should get new values for edition
-            (await _editionManager.GetFeatureValueOrNullAsync(standardEdition.Id, AppFeatureProvider.MyNumericFeature)).ShouldBe("43");
-            (await _editionManager.GetFeatureValueOrNullAsync(standardEdition.Id, AppFeatureProvider.MyBoolFeature)).ShouldBe("true");
-
-            //Should get edition values for tenant
+            //Should get edition values
             (await _featureChecker.GetValueAsync(AppFeatureProvider.MyNumericFeature)).ShouldBe("43");
             (await _featureChecker.IsEnabledAsync(AppFeatureProvider.MyBoolFeature)).ShouldBeTrue();
         }

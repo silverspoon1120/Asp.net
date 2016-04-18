@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 
 namespace Abp.Configuration
@@ -9,7 +8,7 @@ namespace Abp.Configuration
     /// Represents a setting for a tenant or user.
     /// </summary>
     [Table("AbpSettings")]
-    public class Setting : AuditedEntity<long>, IMayHaveTenant
+    public class Setting : AuditedEntity<long>
     {
         /// <summary>
         /// Maximum length of the <see cref="Name"/> property.

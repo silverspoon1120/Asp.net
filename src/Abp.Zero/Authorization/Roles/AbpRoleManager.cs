@@ -1,10 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Abp.Authorization.Users;
 using Abp.Domain.Services;
-using Abp.Domain.Uow;
 using Abp.IdentityFramework;
 using Abp.Localization;
 using Abp.MultiTenancy;
@@ -20,11 +20,12 @@ namespace Abp.Authorization.Roles
     /// Extends <see cref="RoleManager{TRole,TKey}"/> of ASP.NET Identity Framework.
     /// Applications should derive this class with appropriate generic arguments.
     /// </summary>
-    public abstract class AbpRoleManager<TRole, TUser>
+    public abstract class AbpRoleManager<TTenant, TRole, TUser>
         : RoleManager<TRole, int>,
         IDomainService
-        where TRole : AbpRole<TUser>, new()
-        where TUser : AbpUser<TUser>
+        where TTenant : AbpTenant<TTenant, TUser>
+        where TRole : AbpRole<TTenant, TUser>, new()
+        where TUser : AbpUser<TTenant, TUser>
     {
         public ILocalizationManager LocalizationManager { get; set; }
 
@@ -32,39 +33,36 @@ namespace Abp.Authorization.Roles
 
         public IRoleManagementConfig RoleManagementConfig { get; private set; }
 
-        private IRolePermissionStore<TRole, TUser> RolePermissionStore
+        private IRolePermissionStore<TTenant, TRole, TUser> RolePermissionStore
         {
             get
             {
-                if (!(Store is IRolePermissionStore<TRole, TUser>))
+                if (!(Store is IRolePermissionStore<TTenant, TRole, TUser>))
                 {
                     throw new AbpException("Store is not IRolePermissionStore");
                 }
 
-                return Store as IRolePermissionStore<TRole, TUser>;
+                return Store as IRolePermissionStore<TTenant, TRole, TUser>;
             }
         }
 
-        protected AbpRoleStore<TRole, TUser> AbpStore { get; private set; }
+        protected AbpRoleStore<TTenant, TRole, TUser> AbpStore { get; private set; }
 
         private readonly IPermissionManager _permissionManager;
         private readonly ICacheManager _cacheManager;
-        private readonly IUnitOfWorkManager _unitOfWorkManager;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         protected AbpRoleManager(
-            AbpRoleStore<TRole, TUser> store,
+            AbpRoleStore<TTenant, TRole, TUser> store,
             IPermissionManager permissionManager,
             IRoleManagementConfig roleManagementConfig,
-            ICacheManager cacheManager,
-            IUnitOfWorkManager unitOfWorkManager)
+            ICacheManager cacheManager)
             : base(store)
         {
             _permissionManager = permissionManager;
             _cacheManager = cacheManager;
-            _unitOfWorkManager = unitOfWorkManager;
 
             RoleManagementConfig = roleManagementConfig;
             AbpStore = store;
@@ -236,12 +234,12 @@ namespace Abp.Authorization.Roles
             var oldPermissions = await GetGrantedPermissionsAsync(role);
             var newPermissions = permissions.ToArray();
 
-            foreach (var permission in oldPermissions.Where(p => !newPermissions.Contains(p, PermissionEqualityComparer.Instance)))
+            foreach (var permission in oldPermissions.Where(p => !newPermissions.Contains(p, new PermissionEqualityComparer())))
             {
                 await ProhibitPermissionAsync(role, permission);
             }
 
-            foreach (var permission in newPermissions.Where(p => !oldPermissions.Contains(p, PermissionEqualityComparer.Instance)))
+            foreach (var permission in newPermissions.Where(p => !oldPermissions.Contains(p, new PermissionEqualityComparer())))
             {
                 await GrantPermissionAsync(role, permission);
             }
@@ -401,28 +399,24 @@ namespace Abp.Authorization.Roles
             await SetGrantedPermissionsAsync(role, permissions);
         }
 
-        [UnitOfWork]
         public virtual async Task<IdentityResult> CreateStaticRoles(int tenantId)
         {
             var staticRoleDefinitions = RoleManagementConfig.StaticRoles.Where(sr => sr.Side == MultiTenancySides.Tenant);
 
-            using (_unitOfWorkManager.Current.SetTenantId(tenantId))
+            foreach (var staticRoleDefinition in staticRoleDefinitions)
             {
-                foreach (var staticRoleDefinition in staticRoleDefinitions)
+                var role = new TRole
                 {
-                    var role = new TRole
-                    {
-                        TenantId = tenantId,
-                        Name = staticRoleDefinition.RoleName,
-                        DisplayName = staticRoleDefinition.RoleName,
-                        IsStatic = true
-                    };
+                    TenantId = tenantId,
+                    Name = staticRoleDefinition.RoleName,
+                    DisplayName = staticRoleDefinition.RoleName,
+                    IsStatic = true
+                };
 
-                    var identityResult = await CreateAsync(role);
-                    if (!identityResult.Succeeded)
-                    {
-                        return identityResult;
-                    }
+                var identityResult = await CreateAsync(role);
+                if (!identityResult.Succeeded)
+                {
+                    return identityResult;
                 }
             }
 
