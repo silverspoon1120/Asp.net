@@ -14,7 +14,10 @@ namespace Abp.Zero.Configuration
         /// <returns></returns>
         public static IAbpZeroConfig Zero(this IModuleConfigurations moduleConfigurations)
         {
-            return moduleConfigurations.AbpConfiguration.Get<IAbpZeroConfig>();
+            return moduleConfigurations.AbpConfiguration
+                .GetOrCreate("AbpZeroConfig",
+                    () => moduleConfigurations.AbpConfiguration.IocManager.Resolve<IAbpZeroConfig>()
+                );
         }
     }
 }

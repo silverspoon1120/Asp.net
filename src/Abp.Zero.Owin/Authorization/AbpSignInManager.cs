@@ -65,8 +65,7 @@ namespace Abp.Authorization
                     {
                         if ((await UserManager.GetValidTwoFactorProvidersAsync(loginResult.User.Id)).Count > 0)
                         {
-                            if (!await AuthenticationManager.TwoFactorBrowserRememberedAsync(loginResult.User.Id.ToString()) || 
-                                rememberBrowser == false)
+                            if (!await AuthenticationManager.TwoFactorBrowserRememberedAsync(loginResult.User.Id.ToString()))
                             {
                                 var claimsIdentity = new ClaimsIdentity(DefaultAuthenticationTypes.TwoFactorCookie);
 

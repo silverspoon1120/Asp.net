@@ -26,7 +26,7 @@ namespace Abp.Authorization.Users
             TenantId = user.TenantId;
             UserId = user.Id;
             ClaimType = claim.Type;
-            ClaimValue = claim.Value;
+            ClaimType = claim.Value;
         }
     }
 }

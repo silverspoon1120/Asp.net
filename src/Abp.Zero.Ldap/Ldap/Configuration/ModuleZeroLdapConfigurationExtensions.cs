@@ -13,7 +13,10 @@ namespace Abp.Zero.Ldap.Configuration
         /// <returns></returns>
         public static IAbpZeroLdapModuleConfig ZeroLdap(this IModuleConfigurations moduleConfigurations)
         {
-            return moduleConfigurations.AbpConfiguration.Get<IAbpZeroLdapModuleConfig>();
+            return moduleConfigurations.AbpConfiguration
+                .GetOrCreate("AbpZeroLdapConfig",
+                    () => moduleConfigurations.AbpConfiguration.IocManager.Resolve<IAbpZeroLdapModuleConfig>()
+                );
         }
     }
 }
