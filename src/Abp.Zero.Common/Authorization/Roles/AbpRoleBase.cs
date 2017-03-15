@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
-using Microsoft.AspNet.Identity;
 
 namespace Abp.Authorization.Roles
 {
@@ -10,7 +9,7 @@ namespace Abp.Authorization.Roles
     /// Base class for role.
     /// </summary>
     [Table("AbpRoles")]
-    public abstract class AbpRoleBase : FullAuditedEntity<int>, IRole<int>, IMayHaveTenant
+    public abstract class AbpRoleBase : FullAuditedEntity<int>, IMayHaveTenant
     {
         /// <summary>
         /// Maximum length of the <see cref="Name"/> property.

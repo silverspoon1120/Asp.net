@@ -22,7 +22,7 @@ namespace Abp.Application.Features
         IEventHandler<EntityChangedEventData<EditionFeatureSetting>>
 
         where TTenant : AbpTenant<TUser>
-        where TUser : AbpUser<TUser>
+        where TUser : AbpUserBase
     {
         private readonly ICacheManager _cacheManager;
         private readonly IRepository<TenantFeatureSetting, long> _tenantFeatureRepository;

@@ -10,7 +10,7 @@ namespace Abp.MultiTenancy
 {
     public class TenantCache<TTenant, TUser> : ITenantCache, IEventHandler<EntityChangedEventData<TTenant>>
         where TTenant : AbpTenant<TUser>
-        where TUser : AbpUser<TUser>
+        where TUser : AbpUserBase
     {
         private readonly ICacheManager _cacheManager;
         private readonly IRepository<TTenant> _tenantRepository;

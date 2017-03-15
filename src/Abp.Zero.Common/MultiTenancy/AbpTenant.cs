@@ -10,7 +10,7 @@ namespace Abp.MultiTenancy
     /// Represents a Tenant of the application.
     /// </summary>
     public abstract class AbpTenant<TUser> : AbpTenantBase, IFullAudited<TUser>, IPassivable
-        where TUser : AbpUser<TUser>
+        where TUser : AbpUserBase
     {
         /// <summary>
         /// "Default".

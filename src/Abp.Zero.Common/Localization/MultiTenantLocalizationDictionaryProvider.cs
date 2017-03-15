@@ -6,7 +6,6 @@ using System.Linq;
 using Abp.Collections.Extensions;
 using Abp.Dependency;
 using Abp.Localization.Dictionaries;
-using Abp.Collections.Extensions;
 
 namespace Abp.Localization
 {

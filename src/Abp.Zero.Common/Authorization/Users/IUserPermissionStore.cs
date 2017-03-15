@@ -7,7 +7,7 @@ namespace Abp.Authorization.Users
     /// Used to perform permission database operations for a user.
     /// </summary>
     public interface IUserPermissionStore<in TUser>
-        where TUser : AbpUser<TUser>
+        where TUser : AbpUserBase
     {
         /// <summary>
         /// Adds a permission grant setting to a user.

@@ -11,11 +11,10 @@ using Abp.Domain.Services;
 using Abp.Domain.Uow;
 using Abp.Events.Bus.Entities;
 using Abp.Events.Bus.Handlers;
-using Abp.IdentityFramework;
 using Abp.Localization;
 using Abp.Runtime.Caching;
+using Abp.UI;
 using Abp.Zero;
-using Microsoft.AspNet.Identity;
 
 namespace Abp.MultiTenancy
 {
@@ -29,7 +28,7 @@ namespace Abp.MultiTenancy
         IEventHandler<EntityChangedEventData<TTenant>>,
         IEventHandler<EntityDeletedEventData<Edition>>
         where TTenant : AbpTenant<TUser>
-        where TUser : AbpUser<TUser>
+        where TUser : AbpUserBase
     {
         public AbpEditionManager EditionManager { get; set; }
 
@@ -60,32 +59,26 @@ namespace Abp.MultiTenancy
 
         public virtual IQueryable<TTenant> Tenants { get { return TenantRepository.GetAll(); } }
 
-        public virtual async Task<IdentityResult> CreateAsync(TTenant tenant)
+        public virtual async Task CreateAsync(TTenant tenant)
         {
+            await ValidateTenantAsync(tenant);
+
             if (await TenantRepository.FirstOrDefaultAsync(t => t.TenancyName == tenant.TenancyName) != null)
             {
-                return AbpIdentityResult.Failed(string.Format(L("TenancyNameIsAlreadyTaken"), tenant.TenancyName));
-            }
-
-            var validationResult = await ValidateTenantAsync(tenant);
-            if (!validationResult.Succeeded)
-            {
-                return validationResult;
+                throw new UserFriendlyException(string.Format(L("TenancyNameIsAlreadyTaken"), tenant.TenancyName));
             }
 
             await TenantRepository.InsertAsync(tenant);
-            return IdentityResult.Success;
         }
 
-        public async Task<IdentityResult> UpdateAsync(TTenant tenant)
+        public async Task UpdateAsync(TTenant tenant)
         {
             if (await TenantRepository.FirstOrDefaultAsync(t => t.TenancyName == tenant.TenancyName && t.Id != tenant.Id) != null)
             {
-                return AbpIdentityResult.Failed(string.Format(L("TenancyNameIsAlreadyTaken"), tenant.TenancyName));
+                throw new UserFriendlyException(string.Format(L("TenancyNameIsAlreadyTaken"), tenant.TenancyName));
             }
 
             await TenantRepository.UpdateAsync(tenant);
-            return IdentityResult.Success;
         }
 
         public virtual async Task<TTenant> FindByIdAsync(int id)
@@ -109,10 +102,9 @@ namespace Abp.MultiTenancy
             return TenantRepository.FirstOrDefaultAsync(t => t.TenancyName == tenancyName);
         }
 
-        public virtual async Task<IdentityResult> DeleteAsync(TTenant tenant)
+        public virtual async Task DeleteAsync(TTenant tenant)
         {
             await TenantRepository.DeleteAsync(tenant);
-            return IdentityResult.Success;
         }
 
         public Task<string> GetFeatureValueOrNullAsync(int tenantId, string featureName)
@@ -212,25 +204,19 @@ namespace Abp.MultiTenancy
             await TenantFeatureRepository.DeleteAsync(f => f.TenantId == tenantId);
         }
 
-        protected virtual async Task<IdentityResult> ValidateTenantAsync(TTenant tenant)
+        protected virtual async Task ValidateTenantAsync(TTenant tenant)
         {
-            var nameValidationResult = await ValidateTenancyNameAsync(tenant.TenancyName);
-            if (!nameValidationResult.Succeeded)
-            {
-                return nameValidationResult;
-            }
-
-            return IdentityResult.Success;
+            await ValidateTenancyNameAsync(tenant.TenancyName);
         }
 
-        protected virtual async Task<IdentityResult> ValidateTenancyNameAsync(string tenancyName)
+        protected virtual Task ValidateTenancyNameAsync(string tenancyName)
         {
             if (!Regex.IsMatch(tenancyName, AbpTenant<TUser>.TenancyNameRegex))
             {
-                return AbpIdentityResult.Failed(L("InvalidTenancyName"));
+                throw new UserFriendlyException(L("InvalidTenancyName"));
             }
 
-            return IdentityResult.Success;
+            return Task.FromResult(0);
         }
 
         private string L(string name)

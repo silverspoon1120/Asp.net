@@ -4,17 +4,17 @@ using Abp.MultiTenancy;
 namespace Abp.Authorization.Users
 {
     /// <summary>
-    /// Defines an authorization source to be used by <see cref="AbpUserManager{TRole,TUser}.LoginAsync"/> method.
+    /// Defines an external authorization source.
     /// </summary>
     /// <typeparam name="TTenant">Tenant type</typeparam>
     /// <typeparam name="TUser">User type</typeparam>
     public interface IExternalAuthenticationSource<TTenant, TUser>
         where TTenant : AbpTenant<TUser>
-        where TUser : AbpUser<TUser>
+        where TUser : AbpUserBase
     {
         /// <summary>
         /// Unique name of the authentication source.
-        /// This source name is set to <see cref="AbpUser{TTenant,TUser}.AuthenticationSource"/>
+        /// This source name is set to <see cref="AbpUserBase.AuthenticationSource"/>
         /// if the user authenticated by this authentication source
         /// </summary>
         string Name { get; }
