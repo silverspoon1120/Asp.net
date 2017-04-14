@@ -5,21 +5,17 @@ $srcPath = Join-Path $slnPath "src"
 
 # List of projects
 $projects = (
-    "Abp.Zero.Common",
-    "Abp.Zero.Ldap",
     "Abp.Zero",
     "Abp.Zero.Owin",
     "Abp.Zero.AspNetCore",
+    "Abp.Zero.Ldap",
     "Abp.Zero.EntityFramework",
     "Abp.Zero.EntityFrameworkCore",
-    "Abp.Zero.NHibernate",
-    "Abp.ZeroCore",
-    "Abp.ZeroCore.EntityFrameworkCore"
+    "Abp.Zero.NHibernate"
 )
 
 # Rebuild solution
 Set-Location $slnPath
-& dotnet restore
 & dotnet msbuild /t:Rebuild /p:Configuration=Release
 
 # Copy all nuget packages to the pack folder

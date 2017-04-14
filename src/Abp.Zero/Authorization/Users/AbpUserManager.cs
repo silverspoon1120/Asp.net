@@ -162,13 +162,15 @@ namespace Abp.Authorization.Users
                     return false;
                 }
             }
-            
-            //Get cached user permissions
-            var cacheItem = await GetUserPermissionCacheItemAsync(userId);
-            if (cacheItem == null)
+
+            //User not found
+            if (await FindByIdAsync(userId) == null)
             {
                 return false;
             }
+
+            //Get cached user permissions
+            var cacheItem = await GetUserPermissionCacheItemAsync(userId);
 
             //Check for user-specific value
             if (cacheItem.GrantedPermissions.Contains(permission.Name))
@@ -380,7 +382,7 @@ namespace Abp.Authorization.Users
             var user = (await FindByNameAsync(userName));
             if (user != null && user.Id != expectedUserId)
             {
-                return AbpIdentityResult.Failed(string.Format(L("Identity.DuplicateUserName"), userName));
+                return AbpIdentityResult.Failed(string.Format(L("Identity.DuplicateName"), userName));
             }
 
             user = (await FindByEmailAsync(emailAddress));
@@ -648,12 +650,6 @@ namespace Abp.Authorization.Users
             var cacheKey = userId + "@" + (GetCurrentTenantId() ?? 0);
             return await _cacheManager.GetUserPermissionCache().GetAsync(cacheKey, async () =>
             {
-                var user = await FindByIdAsync(userId);
-                if (user == null)
-                {
-                    return null;
-                }
-
                 var newCacheItem = new UserPermissionCacheItem(userId);
 
                 foreach (var roleName in await GetRolesAsync(userId))

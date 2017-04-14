@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using Abp.Authorization;
 using Abp.Authorization.Users;
 using Abp.Dependency;
 using Abp.Modules;

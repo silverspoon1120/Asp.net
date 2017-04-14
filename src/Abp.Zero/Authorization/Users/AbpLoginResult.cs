@@ -5,7 +5,7 @@ namespace Abp.Authorization.Users
 {
     public class AbpLoginResult<TTenant, TUser>
         where TTenant : AbpTenant<TUser>
-        where TUser : AbpUserBase
+        where TUser : AbpUser<TUser>
     {
         public AbpLoginResultType Result { get; private set; }
 

@@ -3,7 +3,7 @@
   <Import Project="..\..\common.props" />
 
   <PropertyGroup>
-    <TargetFramework>net46</TargetFramework>
+    <TargetFramework>net452</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <AssemblyName>Abp.Zero.EntityFramework</AssemblyName>
     <PackageId>Abp.Zero.EntityFramework</PackageId>
@@ -18,12 +18,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Abp.EntityFramework" Version="2.0.0-rc" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="bin\Release\net46\Abp.Zero.EntityFramework.pdb">
-      <PackagePath>lib/net46/</PackagePath>
+    <None Update="bin\Release\net452\Abp.Zero.EntityFramework.pdb">
+      <PackagePath>lib/net452/</PackagePath>
       <Pack>true</Pack>
     </None>
   </ItemGroup>
@@ -32,9 +28,16 @@
     <ProjectReference Include="..\Abp.Zero\Abp.Zero.csproj" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net46' ">
+  <ItemGroup>
+    <PackageReference Include="Abp.EntityFramework" Version="1.5.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net452' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Transactions" />
   </ItemGroup>

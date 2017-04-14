@@ -1,4 +1,3 @@
-using Abp.Authorization;
 using Abp.Authorization.Users;
 using Abp.NHibernate.EntityMappings;
 

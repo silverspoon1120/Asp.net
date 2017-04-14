@@ -17,14 +17,12 @@ namespace Abp.Zero.SampleApp.Tests.MultiTenancy
         [Fact]
         public async Task Should_Not_Create_Duplicate_Tenant()
         {
-            await _tenantManager.CreateAsync(new Tenant("Tenant-X", "Tenant X"));
+            (await _tenantManager.CreateAsync(new Tenant("Tenant-X", "Tenant X"))).Succeeded.ShouldBe(true);
             
             //Trying to re-create with same tenancy name
-
-            await Assert.ThrowsAnyAsync<AbpException>(async () =>
-            {
-                await _tenantManager.CreateAsync(new Tenant("Tenant-X", "Tenant X"));
-            });
+            
+            var result = (await _tenantManager.CreateAsync(new Tenant("Tenant-X", "Tenant X")));
+            result.Succeeded.ShouldBe(false);
         }
     }
 }
