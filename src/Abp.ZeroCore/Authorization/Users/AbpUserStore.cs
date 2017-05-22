@@ -278,7 +278,7 @@ namespace Abp.Authorization.Users
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return UserRepository.FirstOrDefaultAsync(userId.To<long>());
+            return UserRepository.GetAsync(userId.To<long>());
         }
 
         /// <summary>

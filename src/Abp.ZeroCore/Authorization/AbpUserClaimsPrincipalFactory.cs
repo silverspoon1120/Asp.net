@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Abp.Authorization.Roles;
 using Abp.Authorization.Users;
 using Abp.Dependency;
-using Abp.Domain.Uow;
 using Abp.Runtime.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -12,11 +11,11 @@ using Microsoft.Extensions.Options;
 
 namespace Abp.Authorization
 {
-    public class AbpUserClaimsPrincipalFactory<TUser, TRole> : UserClaimsPrincipalFactory<TUser, TRole>, ITransientDependency
+    public abstract class AbpUserClaimsPrincipalFactory<TUser, TRole> : UserClaimsPrincipalFactory<TUser, TRole>, ITransientDependency
         where TRole : AbpRole<TUser>, new()
         where TUser : AbpUser<TUser>
     {
-        public AbpUserClaimsPrincipalFactory(
+        protected AbpUserClaimsPrincipalFactory(
             AbpUserManager<TRole, TUser> userManager,
             AbpRoleManager<TRole, TUser> roleManager,
             IOptions<IdentityOptions> optionsAccessor
@@ -25,7 +24,6 @@ namespace Abp.Authorization
 
         }
 
-        [UnitOfWork]
         public override async Task<ClaimsPrincipal> CreateAsync(TUser user)
         {
             var principal = await base.CreateAsync(user);

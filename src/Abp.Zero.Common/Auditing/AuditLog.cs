@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Abp.Domain.Entities;
 using Abp.Extensions;
@@ -14,42 +15,42 @@ namespace Abp.Auditing
         /// <summary>
         /// Maximum length of <see cref="ServiceName"/> property.
         /// </summary>
-        public static int MaxServiceNameLength = 256;
+        public const int MaxServiceNameLength = 256;
 
         /// <summary>
         /// Maximum length of <see cref="MethodName"/> property.
         /// </summary>
-        public static int MaxMethodNameLength = 256;
+        public const int MaxMethodNameLength = 256;
 
         /// <summary>
         /// Maximum length of <see cref="Parameters"/> property.
         /// </summary>
-        public static int MaxParametersLength = 1024;
+        public const int MaxParametersLength = 1024;
 
         /// <summary>
         /// Maximum length of <see cref="ClientIpAddress"/> property.
         /// </summary>
-        public static int MaxClientIpAddressLength = 64;
+        public const int MaxClientIpAddressLength = 64;
 
         /// <summary>
         /// Maximum length of <see cref="ClientName"/> property.
         /// </summary>
-        public static int MaxClientNameLength = 128;
+        public const int MaxClientNameLength = 128;
 
         /// <summary>
         /// Maximum length of <see cref="BrowserInfo"/> property.
         /// </summary>
-        public static int MaxBrowserInfoLength = 256;
+        public const int MaxBrowserInfoLength = 256;
 
         /// <summary>
         /// Maximum length of <see cref="Exception"/> property.
         /// </summary>
-        public static int MaxExceptionLength = 2000;
+        public const int MaxExceptionLength = 2000;
 
         /// <summary>
         /// Maximum length of <see cref="CustomData"/> property.
         /// </summary>
-        public static int MaxCustomDataLength = 2000;
+        public const int MaxCustomDataLength = 2000;
 
         /// <summary>
         /// TenantId.
@@ -64,16 +65,19 @@ namespace Abp.Auditing
         /// <summary>
         /// Service (class/interface) name.
         /// </summary>
+        [MaxLength(MaxServiceNameLength)]
         public virtual string ServiceName { get; set; }
 
         /// <summary>
         /// Executed method name.
         /// </summary>
+        [MaxLength(MaxMethodNameLength)]
         public virtual string MethodName { get; set; }
 
         /// <summary>
         /// Calling parameters.
         /// </summary>
+        [MaxLength(MaxParametersLength)]
         public virtual string Parameters { get; set; }
 
         /// <summary>
@@ -89,21 +93,25 @@ namespace Abp.Auditing
         /// <summary>
         /// IP address of the client.
         /// </summary>
+        [MaxLength(MaxClientIpAddressLength)]
         public virtual string ClientIpAddress { get; set; }
 
         /// <summary>
         /// Name (generally computer name) of the client.
         /// </summary>
+        [MaxLength(MaxClientNameLength)]
         public virtual string ClientName { get; set; }
 
         /// <summary>
         /// Browser information if this method is called in a web request.
         /// </summary>
+        [MaxLength(MaxBrowserInfoLength)]
         public virtual string BrowserInfo { get; set; }
 
         /// <summary>
         /// Exception object, if an exception occured during execution of the method.
         /// </summary>
+        [MaxLength(MaxExceptionLength)]
         public virtual string Exception { get; set; }
 
         /// <summary>
@@ -119,6 +127,7 @@ namespace Abp.Auditing
         /// <summary>
         /// <see cref="AuditInfo.CustomData"/>.
         /// </summary>
+        [MaxLength(MaxCustomDataLength)]
         public virtual string CustomData { get; set; }
 
         /// <summary>

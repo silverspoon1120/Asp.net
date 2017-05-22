@@ -17,7 +17,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Abp.Authorization.Roles
 {
-    public class AbpRoleManager<TRole, TUser> : RoleManager<TRole>, IDomainService
+    public abstract class AbpRoleManager<TRole, TUser> : RoleManager<TRole>, IDomainService
         where TRole : AbpRole<TUser>, new()
         where TUser : AbpUser<TUser>
     {
@@ -46,7 +46,7 @@ namespace Abp.Authorization.Roles
         private readonly ICacheManager _cacheManager;
         private readonly IUnitOfWorkManager _unitOfWorkManager;
 
-        public AbpRoleManager(
+        protected AbpRoleManager(
             AbpRoleStore<TRole, TUser> store,
             IEnumerable<IRoleValidator<TRole>> roleValidators,
             ILookupNormalizer keyNormalizer,

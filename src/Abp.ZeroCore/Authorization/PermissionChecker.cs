@@ -9,15 +9,13 @@ using Castle.Core.Logging;
 
 namespace Abp.Authorization
 {
-    //TODO: Remove TTenant in the future (it's a breaking change)
-
     /// <summary>
     /// Application should inherit this class to implement <see cref="IPermissionChecker"/>.
     /// </summary>
     /// <typeparam name="TTenant"></typeparam>
     /// <typeparam name="TRole"></typeparam>
     /// <typeparam name="TUser"></typeparam>
-    public class PermissionChecker<TTenant, TRole, TUser> : IPermissionChecker, ITransientDependency, IIocManagerAccessor
+    public abstract class PermissionChecker<TTenant, TRole, TUser> : IPermissionChecker, ITransientDependency, IIocManagerAccessor
         where TRole : AbpRole<TUser>, new()
         where TUser : AbpUser<TUser>
         where TTenant : AbpTenant<TUser>
@@ -35,7 +33,7 @@ namespace Abp.Authorization
         /// <summary>
         /// Constructor.
         /// </summary>
-        public PermissionChecker(AbpUserManager<TRole, TUser> userManager)
+        protected PermissionChecker(AbpUserManager<TRole, TUser> userManager)
         {
             _userManager = userManager;
 

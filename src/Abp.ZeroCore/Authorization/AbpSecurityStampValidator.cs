@@ -10,12 +10,12 @@ using Microsoft.Extensions.Options;
 
 namespace Abp.Authorization
 {
-    public class AbpSecurityStampValidator<TTenant, TRole, TUser> : SecurityStampValidator<TUser>
+    public abstract class AbpSecurityStampValidator<TTenant, TRole, TUser> : SecurityStampValidator<TUser>
         where TTenant : AbpTenant<TUser>
         where TRole : AbpRole<TUser>, new()
         where TUser : AbpUser<TUser>
     {
-        public AbpSecurityStampValidator(
+        protected AbpSecurityStampValidator(
             IOptions<IdentityOptions> options,
             AbpSignInManager<TTenant, TRole, TUser> signInManager)
             : base(
